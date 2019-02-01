@@ -12,20 +12,17 @@ Here's the structure of a stack frame:
 
 Data can be stored in four places:
 
-Static variables are stored in the constant pool of the class area
+* **Static variables** are stored in the constant pool of the class area
+* **Fields** are stored in objects that reside in the heap
+* **Local variables** and **parameters** are stored in the locals array of a stack frame
+* **Intermediate values** needed by operations are stored in the operands stack of a stack frame.
 
-Fields are stored in objects that reside in the heap
-
-Local variables and parameters are stored in the locals array of a stack frame
-
-Intermediate values needed by operations are stored in the operands stack of a stack frame.
-
-Loading and Storing the Operands Stack
+## Loading and Storing the Operands Stack
 Loading refers to pushing data onto the operands stack.
 
 Storing refers to popping data off of the stack and into one of the other memory areas.
 
-Loading constants:
+### Loading constants
 Loading a 32 bit constant is done with ldc. To load a 64 bit constant use `ldc2_w`:
 
 ```
@@ -34,20 +31,19 @@ ldcpicture12_w C          ; < ... > -> <C0 C1 ... > where C = C0C1
 ```
 
 There are also instructions for pushing 8 and 16 bit constants onto the stack.
-
 There are no instructions for storing constants (why?) but you can remove the top of an operand stack using pop:
 
 ```
 pop               ;  C ... > -> < ... >
 ```
 
-Loading and Storing local variables:
+### Loading and Storing local variables
 ```
 ?load N           ; < ... > -> <locals[N] ... >
 ?store N          ; <C ... > -> < ... > && locals[N] = C
 ```
 
-Loading and Storing Fields
+### Loading and Storing Fields
 Assume a is the address of an object. To push a field of a onto the stack use getfield:
 
 ```
