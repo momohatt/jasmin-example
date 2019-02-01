@@ -26,8 +26,8 @@ Storing refers to popping data off of the stack and into one of the other memory
 Loading a 32 bit constant is done with ldc. To load a 64 bit constant use `ldc2_w`:
 
 ```
-ldc C             ;     . > -> <C ... >
-ldcpicture12_w C          ; < ... > -> <C0 C1 ... > where C = C0C1
+ldc C             ; < ... > -> <C ... >
+ldc2_w C          ; < ... > -> <C0 C1 ... > where C = C0C1
 ```
 
 There are also instructions for pushing 8 and 16 bit constants onto the stack.
