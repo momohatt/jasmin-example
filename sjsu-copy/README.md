@@ -9,24 +9,25 @@
 ### TYPES
 There are 10 JVM/Jasmin primitive data types:
 
+|||
 |:----:|:----------|
-| I | int (32 bits)       |
-| J | long (64 bits)      |
-| F | float (32 bits)     |
-| D | double (64 bits)    |
-| B | byte (8 bits)       |
-| S | short (16 bits)     |
-| C | char (16 bits)      |
-| Z | boolean             |
-| a | reference (32 bits) |
-| V | void                |
+| `I` | int (32 bits)       |
+| `J` | long (64 bits)      |
+| `F` | float (32 bits)     |
+| `D` | double (64 bits)    |
+| `B` | byte (8 bits)       |
+| `S` | short (16 bits)     |
+| `C` | char (16 bits)      |
+| `Z` | boolean             |
+| `a` | reference (32 bits) |
+| `V` | void                |
 
 In addition, there are three composite types:
 
 |:----:|:----------|
-| [X   | X[] (array of X)  |
-| LY;  | class Y  |
-| (X)Y | X->Y (method with domain = X and range = Y)  |
+| `[X  ` | X[] (array of X)  |
+| `LY; ` | class Y  |
+| `(X)Y` | X->Y (method with domain = X and range = Y)  |
 
 ### Note
 #### Sub-word types
