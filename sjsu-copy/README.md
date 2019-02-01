@@ -48,7 +48,7 @@ STATEMENT ::= COMMENT | DIRECTIVE | INSTRUCTION
 ### Comments
 Comments begin with a semi-colon. The assembler ignores everything between the semi-colon and the next end of line:
 
-```
+```jasmin
 ; this is a comment
 ```
 
@@ -57,7 +57,7 @@ Directives begin with a period and are executed by the assembler rather than the
 
 For example, suppose the file Car.java contains the following class declaration:
 
-```
+```java
 public class Car extends Vehicle implements Carrier {
     private double speed;
     public void start() {

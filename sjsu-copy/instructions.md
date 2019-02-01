@@ -58,7 +58,7 @@ putfield CLASS/FIELD TYPE ; <v a ...> -> <...> && a.FIELD = v
 
 For example:
 
-```
+```jasmin
 aload 0                      ; <...> -> <this ...>
 getfield Account/balance D   ; <this ...> -> <this.balance ...>
 
@@ -71,7 +71,7 @@ putfield Account/balance D   ; <500.0 this ...> -> <...> &&
 Use `getstatic` & `putstatic` to load and store static fields.
 
 Examples
-```
+```jasmin
 ldc 5       ; push the 32 bit int 5 onto the operand stack
 ldc 5.0     ; push the 32 bit float 5.0 onto the operand stack
 ldc2_w 5    ; push the 64 bit long 5 onto the operand stack
@@ -80,20 +80,20 @@ ldc2_w 5.0  ; push the 64 bit double 5.0 onto the stack
 
 If a method has parameters and local variables, these will be stored in the stack frame's locals array each time the method is invoked. The locals array is an array of 16-bit values.
 
-```
-iload 3 ; push the 32 bit int locals[3] onto the operands stack
-fload 2 ; push 32 bit float in locals[2] onto operands stack
+```jasmin
+iload 3     ; push the 32 bit int locals[3] onto the operands stack
+fload 2     ; push 32 bit float in locals[2] onto operands stack
 ```
 
 A 64 bit double has to be stored in two consecutive slots in the locals array:
 
-```
+```jasmin
 ; push double stored in locals[0] & locals[1] onto operands stack:
 dload 0
 ```
 
 To move data from the operands stack to the locals array:
 
-```
+```jasmin
 istore 3 ; int on top of operands stack is moved to locals[3]
 ```
