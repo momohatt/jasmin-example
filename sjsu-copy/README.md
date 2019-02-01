@@ -24,6 +24,7 @@ There are 10 JVM/Jasmin primitive data types:
 
 In addition, there are three composite types:
 
+|||
 |:----:|:----------|
 | `[X  ` | X[] (array of X)  |
 | `LY; ` | class Y  |
