@@ -386,6 +386,6 @@ NEXT:
 How would this need to be altered if a was a long, float, or double?
 
 ### Demos
-* [Functions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-copy/demo/Functions.java)
-* [TestFunctions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-copy/demo/TestFunctions.java)
-* [Functions.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-copy/demo/Functions.j)
+* [Functions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions.java)
+* [TestFunctions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/TestFunctions.java)
+* [Functions.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions.j)

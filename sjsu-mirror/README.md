@@ -160,9 +160,9 @@ In Jasmin these static blocks translate into a special method called `<clinit>`,
 
 See the following files for a demonstration:
 
-* [Cell.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-copy/demo/Cell/Cell.java)
-* [TestCell.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-copy/demo/Cell/TestCell.java)
-* [Cell.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-copy/demo/Cell/Cell.j)
+* [Cell.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Cell/Cell.java)
+* [TestCell.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Cell/TestCell.java)
+* [Cell.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Cell/Cell.j)
 
 ### The null pointer in Jasmin
 In Java, null is the initial value of every uninitialized reference variable:
