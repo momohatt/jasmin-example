@@ -98,12 +98,13 @@ A complete list of Jasmin instructions can be found at:
 
 Instructions are executed by the JVM and can roughly be grouped into four categories:
 
-* [data control]()
-* [arithmetic & logic]()
-* [sequence control]()
-* [method invocation]()
-* [creating and using objects]()
-* [arrays]()
+* [Data Control](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#data-control)
+* [Arithmetic & Logic](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#arithmetic-and-logic)
+* [Sequence Control](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#arithmetic-and-logic)
+* [Method Invocation](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#method-invocation)
+* [Creating and Using Objects](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#objects)
+* [Arrays](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#arrays)
+
 
 ## Notes
 ### Initializing Static Fields in Jasmin

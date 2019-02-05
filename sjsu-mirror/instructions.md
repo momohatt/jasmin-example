@@ -1,4 +1,12 @@
 # Jasmin Instructions
+## index
+* [Data Control](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#data-control)
+* [Arithmetic & Logic](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#arithmetic-and-logic)
+* [Sequence Control](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#arithmetic-and-logic)
+* [Method Invocation](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#method-invocation)
+* [Creating and Using Objects](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#objects)
+* [Arrays](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/instructions.md#arrays)
+
 ## Data Control
 Recall that the JVM has three storage areas:
 
@@ -821,13 +829,13 @@ B b = new A(); // an instance of A masquerading as an instance of B
 How many subclasses does Employee have?
 
 Java Implementation
-* [Employee.java]()
-* [Programmer.java]()
-* [Company.java]()
+* [Employee.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Company/Employee.java)
+* [Programmer.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Company/Programmer.java)
+* [Company.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Company/Company.java)
 
 Jasmin Implementation
-* [Employee.j]()
-* [Programmer.j]()
+* [Employee.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Company/Employee.j)
+* [Programmer.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Company/Programmer.j)
 
 ### Format of a .class file
 A .class file consists of seven tables:
@@ -870,3 +878,183 @@ It validates the code in `MyClass.class`, returning an error if anything looks s
 It creates a class object representing MyClass and stores it in the class area.
 
 ## Arrays
+
+### Arrays in Java
+Arrays in Java are discussed in [Java Arrays](http://www.cs.sjsu.edu/~pearce/modules/lectures/j2se/intro/lectures/arrays/index.html).
+
+Java's primitive data types are: boolean, byte, char, short, int, long, float, double.
+
+Everything else (objects and arrays) are called **reference types**.
+
+In fact, an array can be considered a special type of `object`.
+
+A reference is an address of the start of an object or array in the heap.
+
+We can summarize with a formal grammar:
+
+```
+TYPE ::= PRIMITIVE | REFERENCE
+PRIMITIVE ::= boolean | NUMBER
+NUMBER ::= EXACT | INEXACT
+EXACT ::= byte | char | short | int | long
+INEXACT ::= float | double
+REFERENCE ::= Object | TYPE[] (i.e., an array)
+```
+
+#### Example:
+The following declaration creates a 32 bit variable named args initialized by null (address `0x00000000`):
+
+```java
+String[] args;
+```
+
+We can draw a picture of memory using a box & pointer diagram. Boxes represent variables (data containers), pointers represent references:
+
+<img src="image/image004.gif" alt="image4" title="image4">
+
+Note: At this point no array has been created.
+
+Where does the variable named args live? If it's a parameter or local variable, then it will live in a stack frame on the Java stack. If it's a non-static field, then it will live in the heap. If it is a static field, then it will live in the class area.
+
+Here's how the array is created in Java:
+
+```java
+args = new String[3];
+```
+
+Here's the box & pointer diagram now:
+
+<img src="image/image005.gif" alt="image5" title="image5">
+
+Note that the new operator, which allocates memory in the heap, is used to create arrays and objects.
+
+Note that the array is simply three consecutive 32-bit variables in the heap.
+
+Each variable can hold the address of a string, which is a type of object.
+
+Note that no strings have been created. Each variable in the array is initialized by null.
+
+Next we fill the array:
+
+```java
+args[0] = new String("cat");
+args[1] = new String("rat");
+args[2] = new String("bat");
+```
+
+Here's the box & pointer diagram:
+
+<img src="image/image006.gif" alt="image6" title="image6">
+
+Note: The expression `args[0]` is pronounced "args sub-zero".
+
+Note: 0, 1, and 2 are called **indices**.
+
+Note: indices always start at 0, so while the length of args is 3, the largest valid index is only 2. Tricky!
+
+The following code **traverses** the array and **processes** (in this case prints) each **element**:
+
+```java
+for(int i = 0; i < args.length; i++) {
+    System.out.println(args[i]);
+}
+```
+
+Note that `args.length` is the capacity of the array, not necessarily the number of non-null elements.
+
+Suppose the following assignment statement is executed:
+
+```java
+args = null;
+```
+
+Here's the box & pointer diagram:
+
+<img src="image/image007.gif" alt="image7" title="image7">
+
+The JVM keeps track of the reference count of every object (and array) in the heap. This is the number of chains references (pointers) to the object that originate from outside of the heap. When the reference count of an object (or array) is zero, then the object is inaccessible. Inaccessible objects are called **garbage**.
+
+When the heap runs low on free space a program called the garbage collector (`System.gc()`) is automatically run by the JVM. This program recycles all of the garbage in the heap. In other words, the bytes in the array like the one above will be added to the free space where they can potentially be reallocated by subsequent calls to the new operator.
+
+### Arrays in Jasmin
+#### Creating Arrays
+```jasmin
+newarray type  ; <c ... > -> <a ... > where a = new type[c]
+```
+For example, the following instructions create an array of 1000 ints:
+
+```jasmin
+ldc 1000
+newarray int  ; note "int" not "I"
+```
+
+These instructions create an array of 1000 references to strings:
+
+```jasmin
+ldc 1000
+anewarray java/lang/String
+```
+
+#### Multi-dimensional arrays
+There is also an instruction for creating multi-dimensional arrays (i.e. arrays of array of arrays of ...):
+
+```jasmin
+multianewarray
+```
+
+#### Type Notation
+The notation for an array type is strange. For example:
+
+```
+[I = array of integers = int[] in Java
+```
+
+#### Storing an item into an array
+```jasmin
+?astore ; <a b c ...> -> <...> c[b] = a
+```
+
+#### Retrieving an item from an array
+```jasmin
+?aload  ; <a b ...> -> <b[a] ... >
+```
+
+```
+? = i | f | d | l | a | b (= byte or boolean)
+```
+
+#### Determining the length of an array
+```jasmin
+arraylength  ; <a ... > -> <a.length ... >
+```
+
+#### Destroying an array: Garbage Collection (gc)
+As explained earlier, when the reference count of an array reaches 0, then the garbage collector will recycle the array and all garbage elements. (Could a garbage array contain a non-garbage element? Give an example of how this could happen.)
+
+#### Processing Arrays
+A container is an object that, among other possible duties, contains data.
+
+The data contained in a container are called the container's elements.
+
+A container usually provides users with methods for:
+
+* adding new elements
+* removing elements
+* accessing individual elements
+* finding out the number of elements
+
+An array is a container.
+
+A linked list is a container.
+
+A container can be more abstract. For example:
+
+* A company is an employee container
+* A control panel is a button container
+* A school is a student container
+
+In the following example an exam is a score container.
+
+* [Exam.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Exam/Exam.java)
+* [TestExam.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Exam/TestExam.java)
+* [Exam.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Exam/Exam.j)
