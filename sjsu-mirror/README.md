@@ -1,11 +1,11 @@
 # Mirror of [the lecture note @ SJSU](http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/index.html)
 
 ## index
-* Jasmin / JVM Data Types
-* The Jasmin Instruction Set
+* [Jasmin / JVM Data Types](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror#jasmin--jvm-data-types)
+* [The Jasmin Instruction Set](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror#the-jasmin-instruction-set)
 * Notes
-    * Initializing static fields
-    * The null pointer in Jasmin
+    * [Initializing static fields](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror#initializing-static-fields-in-jasmin)
+    * [The null pointer in Jasmin](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror#the-null-pointer-in-jasmin)
 
 ## Jasmin / JVM Data Types
 

@@ -386,6 +386,487 @@ NEXT:
 How would this need to be altered if a was a long, float, or double?
 
 ### Demos
-* [Functions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions.java)
-* [TestFunctions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/TestFunctions.java)
-* [Functions.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions.j)
+* [Functions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions/Functions.java)
+* [TestFunctions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions/TestFunctions.java)
+* [Functions.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions/Functions.j)
+
+## Method Invocation
+### Invoking Static Methods
+To invoke a static method, push all of the arguments onto the stack, then execute:
+
+```jasmin
+invokestatic METHOD  ; <c b a...> -> <d...> where d = METHOD(a, b, c)
+```
+
+Here `METHOD` is the fully qualified signature of the method to be invoked:
+
+```
+PACKAGE/CLASS/METHOD(PARAM TYPES)TYPE
+```
+
+After this instruction the return value should be on top of the stack.
+
+Executing this instruction pops the arguments off the stack, creates a new stack frame, pushes the arguments onto that stack, and sets the PC to the first instruction of the method.
+
+#### Example
+The following instruction sequence computes `Math.sin(pi/4)` where `pi` = 3.1416:
+
+```jasmin
+ldc2_w 3.1416
+ldc2_w 4.0
+ddiv
+invokestatic java/lang/Math/sin(D)D
+```
+
+#### Example
+Recall the definition of the static factorial function (n!) given in `Functions.java`.
+
+The following instruction sequence loads `Functions.fact(4)` into `locals[0]`:
+
+```jasmin
+ldc 4
+invokestatic Functions/fact(I)I
+istore 0
+```
+
+### Loading & Storing Fields
+Pushing a field onto the stack is done with
+
+```jasmin
+getfield Class/Field Type
+getstatic Class/Fieeld Type
+```
+
+Storing the top of the stack into a field is done with
+
+```jasmin
+putfield Class/Field Type
+putstatic Class/Field Type
+```
+
+### Invoking non-Static Methods
+To invoke a non-static method, push the object that invokes the method onto the stack (this) along with any other explicit arguments, then execute:
+
+```jasmin
+invokevirtual METHOD  ;<c b a...> -> <d...> where d = a.METHOD(b, c)
+```
+
+After this instruction the return value should be on top of the stack.
+
+Executing this instruction pops the arguments off the stack, creates a new stack frame, pushes the arguments onto that stack, and sets the PC to the first instruction of the method.
+
+#### Example
+The Java method invocation:
+
+```java
+System.out.println("Hello World!");
+```
+
+is translated into Jasmin as:
+
+```jasmin
+getstatic java/lang/System/out Ljava/io/PrintStream;
+ldc "Hello World!"
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+```
+
+#### Example
+The Java method invocation:
+
+```java
+Math.sin(Math.PI/4);
+```
+
+is translated into Jasmin as:
+
+```jasmin
+getstatic java/lang/Math/PI D
+ldc2_w 4.0
+ddiv
+invokestatic java/lang/Math/sin(D)D
+```
+
+#### Example
+Recall the temperature conversion calculator defined in `Calculator.java`.
+
+The following sequence assumes a reference to a `Calculator` object is stored in `locals[1]` After the call the centigrade value of 98.6 degrees is stored in `locals[2]`:
+
+```jasmin
+aload 1
+ldc 98.6
+invokevirtual Calculator/f2c(F)F
+fstore 2
+```
+
+### invokespecial
+Invoke special is similar to invokevirtual, but is used in tricky situations such as invoking constructors:
+
+```jasmin
+.method public <init>()V
+   aload_0 ; push this
+   invokespecial java/lang/Object/<init>()V ; call super
+   return
+.end method
+```
+
+### Demos
+Until now we have been invoking Jasmin methods in Java. We can reverse this.
+
+Recall [Functions.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Functions/Functions.java) contained several static methods. In [TestFunctions.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Functions/TestFunctions.j) we invoke these methods.
+
+Recall the Fahrenheit-Centigrade calculator: [Calculator.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Calculator/Calculator.java)
+We test these functions in [TestCalculator.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Calculator/TestCalculator.j).
+
+### Recursion
+A recursive function is a function that calls itself!
+
+Why wouldn't this cause an infinite loop? Why wouldn't f(n) call f(n) call f(n) ...?
+
+It would. Normally f(n) calls f(n - 1) calls f(n - 2) ... calls f(0).
+
+But instead of calling f(-1), f(0) terminates the recursion by returning the answer.
+
+For example, here's a recursive definition of the factorial function:
+
+```java
+class RecursiveFunctions {
+    public static int fact(int n) {
+        if (n <= 0) {
+            return 1;
+        } else {
+            return n * fact(n � 1);
+        }
+    }
+}
+```
+
+Let's trace a call:
+
+RecursiveFunctions.fact(4)
+4 * RecursiveFunctions.fact(3)
+4 * 3 * RecursiveFunctions.fact(2)
+4 * 3 * 2 * RecursiveFunctions.fact(1)
+4 * 3 * 2 * 1 * RecursiveFunctions.fact(0)
+4 * 3 * 2 * 1 * 1
+4 * 3 * 2 * 1
+4 * 3 * 2
+4 * 6
+24
+
+Sometimes recursive functions are easier to write than non-recurive functions.
+
+In the example above we get to assume fact(n - 1) works properly. We don't need to know how it works. We only need to know how to compute fact(n) from fact(n - 1). The answer: multiply by n!
+
+Of course we also need to know fact(0).
+
+Compilers often depend on recursion. For example, to compile a program n lines long, translate the first line into the the target language, then append to this the result of recursively compiling the remaining n � 1 lines:
+
+```java
+Compliler {
+    Program compile(Program p) {
+        if (length(p) == 0) {
+            return null; // nothing to do!
+        } else {
+            Instruction q0 = translate(head(p));
+            Program q = compile(tail(p));
+            return append(q0, q);
+        }
+    }
+}
+```
+
+See [RecursiveFunctions.j](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions/RecursiveFunctions.j) for the recursive Jasmin definition of the factorial function.
+
+recursively compile the first n - 1 lines, then figure out how to translate the last line.
+
+## Objects
+
+### Objects and Classes in Java
+#### Objects
+An object is a container of named variables that lives in the heap.
+
+The variables contained by an object are called the object's fields, attributes, member variables, or instance variables.
+
+Each variable in an object can be referenced by its qualified name: `object.variable`
+
+##### Example
+Assume bank accounts are represented by objects containing one field of type float: balance.
+
+Assume savings and checking are two objects representing my savings and checking accounts, respectively. Then:
+
+```
+savings.balance = the balance of my savings account
+checking.balance = the balance of my checking account
+```
+
+##### Example
+Assume rational numbers are represented by objects containing two integer fields: `numerator` and `denominator`.
+
+Assume `rat1` represents the rational number 3/4 and `rat2` represents 4/5. Then:
+
+```java
+rat1.numerator = 3
+rat1.denominator = 4
+
+rat2.numerator = 4
+rat2.denominator = 5
+```
+
+#### Classes
+A class is a container of variable and method declarations.
+
+Don't confuse variables and variable declarations.
+
+Don't confuse methods and method declarations.
+
+##### Examples
+* Account.java
+* Rational.java
+
+A class is a template for creating objects.
+
+##### Example
+Here's what's going on in the following lines:
+
+```java
+Rational rat1 = new Rational(3, 4);
+Rational rat2 = new Rational(4, 5);
+Account checking = new Account();
+Account savings = new Account();
+```
+
+In the first two lines two objects are created in the heap. Each object contains two integer variables named numerator and denominator. References to these objects are stored in rat1 and rat2 respectively.
+
+In the second two lines two more objects are created in the heap. Each object contains a variable named balance of type float.
+
+We ask an object to execute a method with the following syntax:
+
+```java
+Rational rat3 = rat1.mul(rat2);
+savings.deposit(500);
+```
+
+We can consider `rat1` and `savings` as implicit arguments to `mul` and `deposit`, respectively. In a non-object-oriented language these might be explicit arguments:
+
+```
+Rational rat3 = mul(rat1, rat2);
+deposit(savings, 500);
+```
+
+The corresponding implicit parameter is always named this.
+
+By using implicit arguments, instances (objects) of the same class can share methods.
+
+### Objects and Classes in Jasmin
+#### Creating Objects
+The following sequence of instructions creates and initializes a new instance of `CLASS`:
+
+```jasmin
+new CLASS                       ; <...> -> <a...> where a = reference to new object in heap
+dup                             ; <a...> -> <a a...>
+invokespecial CLASS/<init>()V   ; <a a...> -> <a...>
+```
+
+The first instruction allocates a new object in the heap and pushes an address to this now object onto the operands stack.
+
+The last instruction invokes the default constructor to initialize the fields of the newly allocated object. Unfortunately, it pops the stack. Therefore it is necessary to push a duplicate copy of the address on the stack. This is the function of the second instruction.
+
+##### Example
+The Java statement:
+
+```java
+new java.awt.Rectangle(50, 30); // creates rectangle with width 50 and height 30 at (0, 0)
+```
+
+is translated into Jasmin as:
+
+```jasmin
+new java/awt/Rectangle
+dup
+ldc 50
+ldc 30
+invokespecial java/awt/Rectangle/<init>(II)V
+```
+
+##### Example
+Continuing from the previous example, the following sequence of Jasmin instructions moves the (upper left corner of the) rectangle from (0, 0) to (10, 15):
+
+```jasmin
+dup
+ldc 10
+ldc 15
+invokevirtual java/awt/Rectangle/setLocation(II)V
+```
+
+##### Example
+Continuing from the previous example, the following sequence of Jasmin instructions converts the rectangle into a string and stores it in `locals[0]`:
+
+```jasmin
+invokevirtual java/awt/Rectangle/toString()Ljava/lang/String;
+astore 0
+```
+
+##### Example
+Continuing from the previous example, the following sequence of Jasmin instructions uses `System.out.println` to print the string stored in `locals[0]`:
+
+```jasmin
+getstatic java/lang/System/out Ljava/io/PrintStream;
+aload 0
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+```
+
+Here's the output produced:
+
+```
+java.awt.Rectangle[x=10,y=15,width=50,height=30]
+```
+
+##### Example
+Recall the Account class declared in [Account.java]().
+
+Here's how a new Account instance is created and initialized:
+
+```jasmin
+new Account                     ; <...> -> <a...> where a = ref to new Account
+dup                             ; <a...> -> <a a...>
+invokespecial Account/<init>()V ; call constructor
+```
+
+##### Example
+Continuing from the previous example, the following sequence of Jasmin instructions deposits $50 into this account:
+
+```jasmin
+dup
+ldc2_w 50.0
+invokevirtual Account/deposit(D)V
+```
+
+#### Classes
+Suppose the file `Car.java` contains the following class declaration:
+
+```
+public class Car extends Vehicle implements Carrier {
+    private double speed;
+    public void start() {
+        // etc.
+    }
+}
+```
+
+A compiler that translated Java to Jasmin would translate `Car.java` into a file called `Car.j` that looked like this:
+
+```jasmin
+.class public Car       ; public class Car 
+.super Vehicle          ; extends Vehicle
+.implements Carrier     ; implements Carrier
+.field private speed D  ; private double speed;
+
+; default constructor
+.method public <init>()V
+    .limit stack 3
+    .limit locals 1
+
+    // call super()
+    aload_0 ; push this
+
+    invokespecial Vehicle()V
+    ; init speed to 0.0
+    aload 0
+    ldc2_w 0.0
+    putfield Car/speed D
+
+    return
+.end method
+
+.method public start()V
+    .limit stack 4      ; start requires a 4 word stack
+    .limit locals 2     ; start requires space for 2 locals
+    ; instruction go here
+.end method
+```
+
+Assembling the file would create a file called `Car.class`.
+
+##### Examples
+* [Account.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/Account.java) or [Account.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/Account.j)
+* [TestAccount.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/TestAccount.j)
+* [TestJava.j]()
+
+### Inheritance
+Recall that one of the strengths of Object-Oriented Programming is the ability to define a class as an extension of an existing class. In this case the new or derived class inherits all of the fields and methods of the existing or base class.
+
+Of course the inherited fields and methods may have been explicitly declared by the super class or inherited from its base class.
+
+More formally, class A is a subclass of class B if:
+
+* A = B (i.e., a class is a subclass of itself)
+* A extends B
+* A extends C and C is a subclass of B
+
+If A is a subclass of B, then we can also say that B is a superclass of A.
+
+If A is a subclass of B, then A inherits all of the fields and methods of B.
+
+If A is a subclass of B, then instances of A can be used in contexts where instances of B are expected. We say that instances of A can masquerade as instances of B.
+
+For example:
+
+```java
+B b = new A(); // an instance of A masquerading as an instance of B
+```
+
+#### UML Notation
+<img src="image/image003.jpg" alt="image3" title="image3">
+
+How many subclasses does Employee have?
+
+Java Implementation
+* [Employee.java]()
+* [Programmer.java]()
+* [Company.java]()
+
+Jasmin Implementation
+* [Employee.j]()
+* [Programmer.j]()
+
+### Format of a .class file
+A .class file consists of seven tables:
+
+1. version
+    magic number
+    minor version
+    major version
+2. constant pool
+    count
+    constants
+3. class
+    access flags (public, final, super, interface, abstract)
+    class name
+    super class name
+4. interfaces
+    count
+    interfaces implemented
+5. fields
+    count
+    fields
+6. methods
+    count
+    methods
+7. attributes
+    count
+    attributes (for example bytecodes of methods are here)
+
+### The Class Loader
+The JVM class loader:
+
+```java
+Class.forName("MyClass.class")
+```
+
+locates the file `MyClass.class` and loads it into memory.
+
+It validates the code in `MyClass.class`, returning an error if anything looks suspicious.
+
+It creates a class object representing MyClass and stores it in the class area.
+
+## Arrays
