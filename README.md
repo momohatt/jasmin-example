@@ -21,6 +21,7 @@ This repository is aimed at collecting useful online resources about Jasmin Asse
 * [The Java Virtual Machine](http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/) / [Jasmin](http://www.cs.sjsu.edu/~pearce/modules/lectures/co/jvm/jasmin/)
     * University lecture note
     * Covers advanced usage of Jasmin with abundant examples
+    * I created a [mirror of this tutorial](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror)
 
 * [Java Virtual Machine Online Instruction Reference](https://cs.au.dk/~mis/dOvs/jvmspec/ref-Java.html)
     * draft version of the book published from O'Reilly

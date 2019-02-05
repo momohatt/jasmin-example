@@ -427,7 +427,7 @@ invokestatic java/lang/Math/sin(D)D
 ```
 
 #### Example
-Recall the definition of the static factorial function (n!) given in `Functions.java`.
+Recall the definition of the static factorial function (n!) given in [Functions.java](https://github.com/momohatt/jasmin-example/tree/master/sjsu-mirror/demo/Functions/Functions.java).
 
 The following instruction sequence loads `Functions.fact(4)` into `locals[0]`:
 
@@ -495,7 +495,7 @@ invokestatic java/lang/Math/sin(D)D
 ```
 
 #### Example
-Recall the temperature conversion calculator defined in `Calculator.java`.
+Recall the temperature conversion calculator defined in [Calculator.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Calculator/Calculator.java).
 
 The following sequence assumes a reference to a `Calculator` object is stored in `locals[1]` After the call the centigrade value of 98.6 degrees is stored in `locals[2]`:
 
@@ -628,8 +628,8 @@ Don't confuse variables and variable declarations.
 Don't confuse methods and method declarations.
 
 ##### Examples
-* Account.java
-* Rational.java
+* [Account.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/Account.java)
+* [Rational.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Rational.java)
 
 A class is a template for creating objects.
 
@@ -730,7 +730,7 @@ java.awt.Rectangle[x=10,y=15,width=50,height=30]
 ```
 
 ##### Example
-Recall the Account class declared in [Account.java]().
+Recall the Account class declared in [Account.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/Account.java).
 
 Here's how a new Account instance is created and initialized:
 
@@ -798,7 +798,7 @@ Assembling the file would create a file called `Car.class`.
 ##### Examples
 * [Account.java](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/Account.java) or [Account.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/Account.j)
 * [TestAccount.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/Account/TestAccount.j)
-* [TestJava.j]()
+* [TestJava.j](https://github.com/momohatt/jasmin-example/blob/master/sjsu-mirror/demo/TestJava.j)
 
 ### Inheritance
 Recall that one of the strengths of Object-Oriented Programming is the ability to define a class as an extension of an existing class. In this case the new or derived class inherits all of the fields and methods of the existing or base class.
@@ -1018,7 +1018,7 @@ The notation for an array type is strange. For example:
 ```jasmin
 ?aload  ; <a b ...> -> <b[a] ... >
 ```
-
+where
 ```
 ? = i | f | d | l | a | b (= byte or boolean)
 ```
