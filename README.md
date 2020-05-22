@@ -27,5 +27,5 @@ This repository is aimed at collecting useful online resources about Jasmin Asse
     * draft version of the book published from O'Reilly
 
 ## Sources of Jasmin Assembler
-* [davidar/jasmin](https://github.com/davidar/jasmin) (last commit: 30 Jun 2015)
-* [TUM-LRR/Jasmin](https://github.com/TUM-LRR/Jasmin) (last commit: 10 Nov 2018)
+* [davidar/jasmin](https://github.com/davidar/jasmin)
+* [TUM-LRR/Jasmin](https://github.com/TUM-LRR/Jasmin)
